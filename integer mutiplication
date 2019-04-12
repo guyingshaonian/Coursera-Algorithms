@@ -1,0 +1,66 @@
+Now, we are trying to perform an algorithm that can deal with the multiplication of two long integers. A divide and conquer algorithm will
+be welcome.
+
+Here are the numbers:
+
+3141592653589793238462643383279502884197169399375105820974944592
+
+2718281828459045235360287471352662497757247093699959574966967627
+
+Let's have a look: these integers are so large that when we want to store them, they are out of memory. So we can only store them in 
+strings.
+```
+big_multiply <- function(x, y){
+  n_1 <- nchar(x)
+  n_2 <- nchar(y)
+  if(n_1 < 2 && n_2 < 2){
+    return(as.character(as.integer(x) * as.integer(y)))
+  }else{
+    a <- substr(x, 1, n_1/2)
+    b <- substr(x, (2+n_1)/2, n_1)
+    c <- substr(y, 1, n_2/2)
+    d <- substr(y, (2+n_2)/2, n_2)
+    r_1 <- paste(big_multiply(a,c), str_dup('0', n_1/2 + n_2/2), sep = '')
+    r_2 <- big_multiply(b,d)
+    r_3 <- paste(big_multiply(a,d), str_dup('0', n_1/2), sep = '')
+    r_4 <- paste(big_multiply(b,c), str_dup('0', n_2/2), sep = '')
+    t <- big_sum(r_1,r_2)
+    t <- big_sum(t, r_3)
+    t <- big_sum(t, r_4)
+    return(t)
+  }
+}
+
+big_sum <- function(x,y){
+  k <- 0
+  n_1 <- nchar(x)
+  n_2 <- nchar(y)
+  if(n_1 < n_2){
+    temp <- x
+    x <- y
+    y <- x
+  }
+  n_1 <- nchar(x)
+  n_2 <- nchar(y)
+  v_1 <- vector(length = n_1)
+  v_2 <- rep(0, n_1)
+  for (i in 1:n_1) {
+    v_1[i] <- as.integer(substr(x, i, i))
+  }
+  for (i in 1:n_2) {
+    v_2[n_1-n_2+i] <- as.integer(substr(y, i, i))
+  }
+  k <- 0
+  for (i in 1:n_1) {
+    temp <- v_1[n_1-i+1] + v_2[n_1-i+1] + k
+    if(temp >= 10)
+      k <- 1
+    else k <- 0
+    v_1[n_1-i+1] <- temp - 10 * k
+  }
+  if(k == 1) v_1 <- c(1, v_1)
+  return(str_c(v_1, collapse = ''))
+  
+}
+
+```
