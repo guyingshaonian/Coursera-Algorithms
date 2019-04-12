@@ -1,0 +1,31 @@
+my_sort <- function(x){
+  n <- length(x)
+  if(n == 1)
+    return(x)
+  else{
+    return(my_merge(my_sort(x[1:floor(n/2)]), my_sort(x[(floor(n/2)+1):n])))
+  }
+}
+
+my_merge <- function(x,y){
+  n_1 <- length(x)
+  n_2 <- length(y)
+  n <- n_1 + n_2
+  v <- rep(0, n)
+  i <- j <- 1
+  for (k in 1:n) {
+    if(x[i] < y[j]){
+      v[k] <- x[i]
+      i <- i + 1
+      if(i > n_1)
+        x[i] <- Inf
+    }
+    else{
+      v[k] <- y[j]
+      j <- j + 1
+      if(j > n_2)
+        y[j] <- Inf
+    } 
+  }
+  return(v)
+}
