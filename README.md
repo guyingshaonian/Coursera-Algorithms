@@ -9,5 +9,5 @@ As for multiple-choice questions, you'd better consult this site https://doraemo
 
 assignment_2.txt is designed for inverstion. When you run the following codes, you will get the answer.
 
-assignment_2 <- read.table("F:/Mine/coursera/Algorithm/assignment_2.txt", quote="\"", comment.char="")
+assignment_2 <- read.table("F:/Mine/coursera/Algorithm/assignment_2.txt", quote="\\"", comment.char="")
 inversion(assignment_2$V1)
