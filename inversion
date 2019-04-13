@@ -1,0 +1,65 @@
+inversion <- function(x){
+  if(length(x) == 1)
+    return(0)
+  else{
+    n <- length(x)
+    x_left <- x[1:floor(n/2)]
+    x_right <- x[(1+floor(n/2)):n]
+    inv_left <- inversion(x_left)
+    inv_right <- inversion(x_right)
+    s_left <- my_sort(x_left)
+    s_right <- my_sort(x_right)
+    i <- j <- 1
+    t <- 0
+    for (k in 1:n) {
+      if(s_left[i] < s_right[j]){
+        i <- i + 1
+        if(i > length(s_left))
+          break
+      }
+      else{
+        t <- t + length(s_left) - i + 1
+        j <- j + 1
+        if(j > length(s_right))
+          break
+      }
+    }
+    inv_middle <- t
+    return(inv_left + inv_right + inv_middle)
+  }
+  
+}
+
+my_sort <- function(x){
+  n <- length(x)
+  if(n == 1)
+    return(x)
+  else{
+    a <- my_sort(x[1:floor(n/2)])
+    b <- my_sort(x[(floor(n/2)+1):n])
+    return(my_merge(a,b))
+  }
+}
+
+my_merge <- function(x,y){
+  n_1 <- length(x)
+  n_2 <- length(y)
+  n <- n_1 + n_2
+  v <- rep(0, n)
+  i <- j <- 1
+  for (k in 1:n) {
+    if(x[i] < y[j]){
+      v[k] <- x[i]
+      i <- i + 1
+      if(i > n_1)
+        x[i] <- Inf
+    }
+    else{
+      v[k] <- y[j]
+      j <- j + 1
+      if(j > n_2)
+        y[j] <- Inf
+    }
+  }
+  return(v)
+}
